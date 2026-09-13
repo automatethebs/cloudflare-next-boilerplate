@@ -1,0 +1,58 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "my-app",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "vars": {
+    "NEXTJS_ENV": "production"
+  },
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "my-app"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-app",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "drizzle"
+    }
+  ],
+  // Workers AI — no provisioning needed, free 10,000 Neurons/day, no card.
+  "ai": {
+    "binding": "AI"
+  },
+  // Queues — the queue is auto-created on first deploy. Free 10,000 ops/day,
+  // 24h retention, no card. NOTE: consumers cannot live in this OpenNext
+  // worker (it only exports `fetch`); see workers/companion for the consumer.
+  "queues": {
+    "producers": [
+      {
+        "binding": "BACKGROUND",
+        "queue": "my-app-background"
+      }
+    ]
+  }
+  // KV — OPTIONAL, commented out until you create a namespace (one command,
+  // free, no card: 100k reads/day, 1k writes/day, 1GB).
+  //   1. npx wrangler kv namespace create CACHE
+  //   2. Paste the printed `id` below and uncomment.
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "CACHE",
+  //     "id": "PASTE_NAMESPACE_ID_HERE"
+  //   }
+  // ]
+  //
+  // Cron Triggers, Durable Objects, and Workflows are intentionally NOT here:
+  // the OpenNext worker only exports `fetch`, so `scheduled` handlers, queue
+  // consumers, DO classes, and Workflow classes cannot live in this worker.
+  // See workers/companion (optional second worker) and src/app/api/cron/*.
+}

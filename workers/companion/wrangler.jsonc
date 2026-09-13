@@ -1,0 +1,43 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "main": "src/index.ts",
+  "name": "my-app-companion",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "triggers": {
+    "crons": ["0 2 * * *"]
+  },
+  "vars": {
+    "APP_URL": "https://YOUR-DOMAIN"
+  },
+  "queues": {
+    "consumers": [
+      {
+        "queue": "my-app-background",
+        "max_batch_size": 10,
+        "max_retries": 3
+      }
+    ]
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RATE_LIMITER",
+        "class_name": "RateLimiter"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["RateLimiter"]
+    }
+  ],
+  "workflows": [
+    {
+      "binding": "BACKGROUND_WORKFLOW",
+      "name": "my-app-background-workflow",
+      "class_name": "BackgroundWorkflow"
+    }
+  ]
+}

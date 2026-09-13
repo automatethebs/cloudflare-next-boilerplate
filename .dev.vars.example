@@ -1,0 +1,23 @@
+# =============================================================================
+# Wrangler / OpenNext local secrets.
+# Copy this file to `.dev.vars` (gitignored).
+#
+#   copy:   copy .dev.vars.example .dev.vars
+#
+# Wrangler does NOT load `.env`. Put the same names here for:
+#   npm run preview
+# Production: use `npx wrangler secret put NAME` instead of this file.
+# =============================================================================
+
+# OpenNext: development vs production Next build when running under Wrangler.
+# wrangler.jsonc already sets NEXTJS_ENV=production for deploy.
+NEXTJS_ENV=development
+
+# Same values as `.env`.
+APP_URL=http://localhost:3000
+# Protects /api/cron/* (cron-job.org or workers/companion sends Bearer token).
+CRON_SECRET=
+# Turnstile (free, no card): https://dash.cloudflare.com → Turnstile → Add widget.
+# Site key is public (NEXT_PUBLIC_*) — it is inlined at build time.
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=

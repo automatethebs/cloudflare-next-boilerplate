@@ -1,0 +1,16 @@
+node_modules
+.next
+.env
+.env.local
+.env.*.local
+*.db
+*.db-journal
+.vercel
+.wrangler
+.data
+.open-next
+.dev.vars
+.firecrawl
+dist
+coverage
+*.tsbuildinfo
